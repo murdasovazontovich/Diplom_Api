@@ -1,10 +1,11 @@
 import pytest
 import allure
 from data import LOGIN_USER
+from data import INVALID_LOGIN_DATA 
 from methods.login_user import LoginUser
 
 
-class TestLoginCourier:
+class TestLoginUser:
     @allure.title("Залогиниться юзеру")
     def test_login_with_existing_user_returns_ok(self):
         response = LoginUser.login_user(LOGIN_USER["email"], LOGIN_USER["password"])
@@ -17,9 +18,7 @@ class TestLoginCourier:
 
 
     @allure.title("Неудачный залогин с неверным логином и паролем")
-    @pytest.mark.parametrize("email, password", [["wrong@mail.com", "123456"],
-                                                 ["zontovich_39@yandex.ru", "wrong_password"],
-                                                 ["wrong@mail.com", "wrong_password"],])
+    @pytest.mark.parametrize("email, password", INVALID_LOGIN_DATA)
     def test_login_with_invalid_credentials_returns_401(self, email, password):
         response = LoginUser.login_user(email, password)
         body = response.json()
